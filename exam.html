@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamPro - Online Examination System</title>
+
+<style>
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+:root {
+    --primary: #6c4df6;
+    --primary-dark: #5135d8;
+    --secondary: #8b5cf6;
+    --success: #16a34a;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --dark: #111827;
+    --dark2: #1f2937;
+    --light: #f7f8fc;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    transition: .3s;
+}
+
+body.dark {
+    --light: #0f172a;
+    --white: #1e293b;
+    --dark: #f8fafc;
+    --dark2: #334155;
+    --gray: #cbd5e1;
+    --border: #475569;
+    background: #0f172a;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    height: 70px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.logo span {
+    color: var(--dark);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: .25s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.menu-btn {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 25px;
+    color: var(--dark);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    background:
+        radial-gradient(circle at 90% 20%, rgba(108,77,246,.2), transparent 30%),
+        radial-gradient(circle at 10% 90%, rgba(139,92,246,.15), transparent 30%);
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 68px);
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero p {
+    color: var(--gray);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 600px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.hero-card {
+    background: var(--white);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    animation: floating 3s ease-in-out infinite;
+}
+
+.exam-preview {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 25px;
+    border-radius: 18px;
+    color: white;
+}
+
+.exam-preview h3 {
+    margin-bottom: 20px;
+}
+
+.preview-question {
+    background: rgba(255,255,255,.15);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+@keyframes floating {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-title h2 {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: var(--gray);
+}
+
+/* =========================================================
+   EXAM CARDS
+========================================================= */
+
+.filter-box {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-box select,
+.filter-box input {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--dark);
+}
+
+.exam-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.exam-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: .3s;
+}
+
+.exam-card:hover {
+    transform: translateY(-7px);
+}
+
+.exam-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 13px;
+    background: rgba(108,77,246,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    margin-bottom: 18px;
+}
+
+.exam-card h3 {
+    margin-bottom: 10px;
+}
+
+.exam-card p {
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+.exam-info {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.info-item {
+    background: var(--light);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.easy {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.hard {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.feature-card .icon {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: var(--gray);
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   EXAM SCREEN
+========================================================= */
+
+.exam-screen {
+    display: none;
+    min-height: 100vh;
+    background: var(--light);
+    padding-bottom: 50px;
+}
+
+.exam-header {
+    background: var(--white);
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.timer {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.exam-layout {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 25px;
+}
+
+.question-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.question-number {
+    color: var(--primary);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.question-text {
+    font-size: 22px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.options {
+    display: grid;
+    gap: 14px;
+}
+
+.option {
+    padding: 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.option:hover {
+    border-color: var(--primary);
+}
+
+.option.selected {
+    background: rgba(108,77,246,.1);
+    border-color: var(--primary);
+}
+
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.question-nav {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    height: fit-content;
+}
+
+.question-nav h3 {
+    margin-bottom: 15px;
+}
+
+.question-buttons {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+}
+
+.question-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--dark);
+}
+
+.question-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.question-btn.answered {
+    background: var(--success);
+    color: white;
+}
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result-screen {
+    display: none;
+    min-height: 80vh;
+    padding: 70px 0;
+}
+
+.result-card {
+    max-width: 700px;
+    margin: auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.score-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 25px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg,var(--primary),var(--secondary));
+    color: white;
+}
+
+.score-circle strong {
+    font-size: 45px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.result-stat {
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--light);
+}
+
+.result-stat strong {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+/* =========================================================
+   LEADERBOARD / HISTORY / ADMIN
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 15px;
+}
+
+.leader-row,
+.history-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-box {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.admin-form {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-form input,
+.admin-form select {
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--dark);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-box {
+    background: var(--white);
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin: 15px 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--dark);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    background: #111827;
+    color: white;
+    padding: 50px 0 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+footer h3,
+footer h4 {
+    margin-bottom: 15px;
+}
+
+footer p,
+footer a {
+    color: #cbd5e1;
+    line-height: 1.8;
+    text-decoration: none;
+}
+
+.copyright {
+    border-top: 1px solid #374151;
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 30px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px) {
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        padding: 60px 0;
+    }
+
+    .exam-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .features {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .exam-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width:650px) {
+
+    .nav-links,
+    .nav-buttons {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-links.mobile-active {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .exam-grid,
+    .features,
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .question-card {
+        padding: 20px;
+    }
+
+    .question-text {
+        font-size: 18px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================================================
+     NAVBAR
+====================================================== -->
+
+<nav class="navbar">
+    <div class="container nav-inner">
+
+        <div class="logo">
+            Exam<span>Pro</span>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#exams">Exams</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#leaderboard">Leaderboard</a></li>
+            <li><a href="#history">History</a></li>
+            <li><a href="#admin">Admin</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="openLogin()">Login</button>
+            <button class="btn btn-primary" onclick="openSignup()">Sign Up</button>
+            <button class="btn btn-outline" onclick="toggleDark()">🌙</button>
+        </div>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+</nav>
+
+
+<!-- ======================================================
+     HOME
+====================================================== -->
+
+<main id="mainContent">
+
+<section class="hero" id="home">
+    <div class="container hero-content">
+
+        <div>
+            <p style="color:var(--primary);font-weight:bold;">
+                ONLINE EXAMINATION PLATFORM
+            </p>
+
+            <h1>
+                Test Your Knowledge.
+                <span>Achieve More.</span>
+            </h1>
+
+            <p>
+                Prepare, practice and evaluate your knowledge with
+                interactive online examinations. Choose an exam,
+                answer questions and get your result instantly.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#exams" class="btn btn-primary">
+                    Explore Exams →
+                </a>
+
+                <button class="btn btn-outline" onclick="openSignup()">
+                    Create Account
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="exam-preview">
+                <h3>📝 JavaScript Assessment</h3>
+
+                <div class="preview-question">
+                    Q1. Which keyword declares a constant?
+                </div>
+
+                <div class="preview-question">
+                    A. let &nbsp;&nbsp; B. const &nbsp;&nbsp; C. var
+                </div>
+
+                <div class="preview-question">
+                    ⏱️ 15 Minutes &nbsp; | &nbsp; 10 Questions
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ======================================================
+     EXAMS
+====================================================== -->
+
+<section class="section" id="exams">
+
+<div class="container">
+
+<div class="section-title">
+    <h2>Available Exams</h2>
+    <p>Choose an examination and test your skills.</p>
+</div>
+
+<div class="filter-box">
+
+    <input
+        type="text"
+        id="searchExam"
+        placeholder="Search exams..."
+        oninput="renderExams()"
+    >
+
+    <select id="categoryFilter" onchange="renderExams()">
+        <option value="all">All Categories</option>
+        <option value="Programming">Programming</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Database">Database</option>
+        <option value="General">General</option>
+    </select>
+
+    <select id="difficultyFilter" onchange="renderExams()">
+        <option value="all">All Levels</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+    </select>
+
+</div>
+
+<div class="exam-grid" id="examGrid"></div>
+
+</div>
+</section>
+
+
+<!-- ======================================================
+     FEATURES
+====================================================== -->
+
+<section class="section" id="features">
+
+<div class="container">
+
+<div class="section-title">
+    <h2>Why Choose ExamPro?</h2>
+    <p>Everything required for a modern online examination system.</p>
+</div>
+
+<div class="features">
+
+<div class="feature-card">
+    <div class="icon">⏱️</div>
+    <h3>Smart Timer</h3>
+    <p>Complete your examination within the allocated time.</p>
+</div>
+
+<div class="feature-card">
+    <div class="icon">📊</div>
+    <h3>Instant Results</h3>
+    <p>View your score, correct answers and percentage instantly.</p>
+</div>
+
+<div class="feature-card">
+    <div class="icon">📱</div>
+    <h3>Responsive</h3>
+    <p>Works smoothly on mobile, tablet and desktop screens.</p>
+</div>
+
+<div class="feature-card">
+    <div class="icon">🔒</div>
+    <h3>Secure Exams</h3>
+    <p>Questions and results are handled using browser storage.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ======================================================
+     LEADERBOARD
+====================================================== -->
+
+<section class="section" id="leaderboard">
+
+<div class="container">
+
+<div class="section-title">
+    <h2>Leaderboard 🏆</h2>
+    <p>Top examination scores.</p>
+</div>
+
+<div class="dashboard-card">
+    <div id="leaderboardList"></div>
+</div>
+
+</div>
+</section>
+
+
+<!-- ======================================================
+     HISTORY
+====================================================== -->
+
+<section class="section" id="history">
+
+<div class="container">
+
+<div class="section-title">
+    <h2>Exam History</h2>
+    <p>Your previous examination results.</p>
+</div>
+
+<div class="dashboard-card">
+    <div id="historyList"></div>
+</div>
+
+</div>
+</section>
+
+
+<!-- ======================================================
+     ADMIN
+====================================================== -->
+
+<section class="section" id="admin">
+
+<div class="container">
+
+<div class="section-title">
+    <h2>Admin Dashboard</h2>
+    <p>Add questions dynamically to the examination system.</p>
+</div>
+
+<div class="admin-box">
+
+<form class="admin-form" onsubmit="addQuestion(event)">
+
+<input
+    id="newQuestion"
+    placeholder="Enter question"
+    required
+>
+
+<input
+    id="option1"
+    placeholder="Option A"
+    required
+>
+
+<input
+    id="option2"
+    placeholder="Option B"
+    required
+>
+
+<input
+id="op
